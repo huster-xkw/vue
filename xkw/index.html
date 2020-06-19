@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<meta http-equiv="X-UA-Compatible" content="ie=edge">
+		<title>简单折线</title>
+		<script src="js/vue.js" type="text/javascript" charset="utf-8"></script>
+	</head>
+	<script charset="utf-8"
+	    src="https://map.qq.com/api/gljs?v=1.exp&key=OB4BZ-D4W3U-B7VVO-4PJWW-6TKDJ-WPB77"></script>
+	<style>
+	    html,
+	    body {
+	        height: 100%;
+	        margin: 0px;
+	        padding: 0px;
+	    }
+	
+	    #mapContainer {
+	        width: 100%;
+	        height: 100%;
+	    }
+	</style>
+	<body>
+			<div id='box'>
+				<button type="button" @click="initMap()">点击显示地图</button>
+				<div id="mapContainer"></div>
+			</div>
+	<script type="text/javascript">
+		var vm = new Vue({
+			el:"#box",
+			data:{
+				myname:'xkw',
+				myhtml:"<h1>xkw</h1>",
+				isShow:true,
+				isCreated:true,
+				isActive:false,
+				classobj:{
+					a:true,
+					b:true
+				},
+				classarr:['a','b'],
+				background:{
+					backgroundColor:"red"
+				},
+				background1:[{background:'red'},{fontSize:'30px'}],
+				datalist:['xkw','zh'],
+				which:3,
+				datas:['aaa','bbb','ccc','ddd'],
+				data3:['aaa','bbb','ccc','ddd'],
+				mytext:'',
+				isChecked:false,
+				checkGroup:[],
+				chGroup:'',
+				ms:[]
+			},
+			methods:{
+				handleClick(){
+					this.isCreated = !this.isCreated
+				},
+				handleClick1(){
+					this.which = 2
+				},
+				handleinput(){
+					// console.log(this.mytext)
+					this.datas = this.data3
+					var newlist = this.datas.filter(item=>item.indexOf(this.mytext)>-1)
+					console.log(newlist)
+					this.datas = newlist;
+				},
+				hand1(ev){
+					console.log("li")
+				},
+				hand2(){
+					console.log('321')
+				},
+				hand3(ev){
+					if(ev.keyCode==13)
+						console.log(ev)
+				},
+				hand(){
+					fetch('https://raw.githubusercontent.com/DaKoala/fetch-example/master/people.json')
+					    .then(res => res.json())
+					    .then(json => this.ms=json)
+					    // [{ name: "张三", age: 18 }, { name: "李四", age: 20 }, { name: "王五", age: 22 }]
+						},
+				initMap() {
+					//初始化地图
+					var map = new TMap.Map('mapContainer', {
+						center: new TMap.LatLng(40.040452,116.273486),//地图显示中心点
+						zoom:16	//缩放级别
+					});
+				
+					//创建 MultiPolyline
+					var polylineLayer = new TMap.MultiPolyline({
+						id: 'polyline-layer', //图层唯一标识
+						map: map,//绘制到目标地图
+						//折线样式定义
+						styles: {
+							'style_blue': new TMap.PolylineStyle({
+								'color': '#3777FF', //线填充色
+								'width': 6, //折线宽度
+								'borderWidth': 5, //边线宽度
+								'borderColor': '#FFF', //边线颜色
+								'lineCap': 'butt' //线端头方式
+							}),
+							'style_red': new TMap.PolylineStyle({
+								'color': '#CC0000', //线填充色
+								'width': 6, //折线宽度
+								'borderWidth': 5, //边线宽度
+								'borderColor': '#CCC', //边线颜色
+								'lineCap': 'round' //线端头方式
+							})
+						},
+						//折线数据定义
+						geometries: [
+							{//第1条线
+								'id': 'pl_1',//折线唯一标识，删除时使用
+								'styleId': 'style_blue',//绑定样式名
+								'paths': [new TMap.LatLng(40.038540, 116.272389), new TMap.LatLng(40.038844, 116.275210), new TMap.LatLng(40.041407, 116.274738)]
+							},
+							{//第2条线
+								'id': 'pl_2',	
+								'styleId': 'style_red',
+								'paths': [new TMap.LatLng(40.039492,116.271893), new TMap.LatLng(40.041562,116.271421), new TMap.LatLng(40.041957,116.274211)]
+							}
+						]
+					});
+				}
+				,
+				
+				
+				
+			}
+		})	
+	</script>
+	</body>
+</html>
